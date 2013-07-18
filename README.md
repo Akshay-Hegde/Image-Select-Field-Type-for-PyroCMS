@@ -17,10 +17,10 @@ Image Select Field Type for PyroCMS 2.2.1
 
 ##2. Get Single Select Image
 
-You can get the selected single image ID with ```php {{ field_type_name }} ```
+You can get the selected single image ID with ```{{ field_type_name }}```
 
-To get the complete image url you can use ```html <img src="{{ url:site }}files/large/{{ field_type_name }}" /> ``` for full size image,
-and ```html <img src="{{ url:site }}files/thumb/{{ field_type_name }}/400" /> ``` for thumb image with max 400px width.
+To get the complete image url you can use ```<img src="{{ url:site }}files/large/{{ field_type_name }}" /> ``` for full size image,
+and ```<img src="{{ url:site }}files/thumb/{{ field_type_name }}/400" /> ``` for thumb image with max 400px width.
 
 ##3. Get Multiple Select Images
 
