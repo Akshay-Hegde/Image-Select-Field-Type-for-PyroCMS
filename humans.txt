@@ -1,0 +1,9 @@
+/* Image Select Field Type for PyroCMS */
+
+/* TEAM */
+    Developer: Kingsley Chan
+    From: Hong Kong
+
+/* Module */
+    Last update:2013/07/19
+    Language: English
