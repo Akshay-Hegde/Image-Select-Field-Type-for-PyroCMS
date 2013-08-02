@@ -23,7 +23,6 @@ class Field_image_select
 		$this->CI =& get_instance();
 		$this->CI->load->library('files/files');
 		$this->CI->load->model('files/file_folders_m');
-		$this->CI->load->library('files/files');
 	}
         
         public function pre_output_plugin($input, $params, $row_slug){
@@ -89,15 +88,7 @@ class Field_image_select
             $empty_select->id = '';
             $empty_select->name = '';
             
-            $folders = $this->CI->file_folders_m->get_all();
-            array_unshift($folders, $empty_select);
-            
-            foreach($folders as $folder){
-                if($folder->parent_id != 0){
-                    $folder->name = ' » '.$folder->name;
-                }
-            }
-            $folder_select = array_for_select($folders, 'id', 'name');
+            $folder_select = $this->_render_tree();
             
             $uniqueid = 'a'.uniqid();
             $container_open = '<div class="is_image_container" id="'.$uniqueid.'">';
@@ -147,4 +138,22 @@ class Field_image_select
 	{
 		return '<label><input type="radio" name="single" id="single" value="1" '.($value == 1? 'checked': '').' /> Single Select</label> <label><input type="radio" name="single" id="single" value="0" '.($value != 1? 'checked': '').' /> Multiple Select</label>';
 	}
+        
+        function _render_tree(){
+            $tree = Files::folder_tree();
+            $result = array();
+            
+            $result[''] = '';
+            foreach($tree as $branch){
+                $result[$branch['id']] = $branch['name'];
+                
+                if(isset($branch['children']) && !empty($branch['children'])){
+                    foreach($branch['children'] as $child){
+                        $result[$child['id']] = ' » '.$child['name'];
+                    }
+                }
+            }
+            
+            return $result;
+        }
 }
