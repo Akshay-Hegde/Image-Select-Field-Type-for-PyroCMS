@@ -12,7 +12,7 @@ class Field_image_select
 {
 	public $field_type_slug    = 'image_select';
 	public $db_col_type        = 'text';
-	public $version            = '1.0.1';
+	public $version            = '1.0.2';
 	public $author             = array('name'=>'Kingsley@Web Concept', 'url'=>'http://wcept.com/');
 	public $custom_parameters  = array('single');
 
@@ -142,18 +142,37 @@ class Field_image_select
         function _render_tree(){
             $tree = Files::folder_tree();
             $result = array();
-            
-            $result[''] = '';
-            foreach($tree as $branch){
-                $result[$branch['id']] = $branch['name'];
-                
-                if(isset($branch['children']) && !empty($branch['children'])){
-                    foreach($branch['children'] as $child){
-                        $result[$child['id']] = ' » '.$child['name'];
-                    }
+
+            $first_row[''] = '';
+
+            $tree_items = $this->_render_content($tree);
+
+            $result = $first_row + $tree_items;
+
+            return $result;
+        }
+        
+        function _render_content($data = array(), $level = 0){
+            $prefix = '';
+            $result = array();
+
+            if($level > 0){
+                for($i=0; $i<$level; $i++){
+                    $prefix .= ' » ';
                 }
             }
-            
+
+            foreach($data as $branch){
+                $result[$branch['id'].''] = $prefix.$branch['name'];
+
+                if(isset($branch['children']) && !empty($branch['children'])){
+                    $children = $this->_render_content($branch['children'], $level+1);
+
+                    $temp = $result;
+                    $result = $temp + $children;
+                }
+            }
+
             return $result;
         }
 }
